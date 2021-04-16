@@ -43,17 +43,25 @@ nav a {
 }
 section {
   min-height: 100vh;
+}
+
+.logs {
+  background: green;
+}
+
+.intersection {
+  min-height: 100vh;
+  width: 100vw;
   display: flex;
   justify-content: center;
   align-items: center;
-}
-section h2 {
-  font-size: 5rem;
-  color: white;
+  margin: 0;
+  padding: 0;
 }
 
-.logs{
-  background: green;
+.intersection h2 {
+  font-size: 5rem;
+  color: white;
 }
 
 .home {

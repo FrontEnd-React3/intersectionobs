@@ -1,13 +1,21 @@
 import React, { useRef, useEffect, useState } from "react";
-import "./App.css";
+import { styles } from "./App.css";
 
-const useElementOnScreen = (options) => {
+const useElementOnScreen = () => {
+  const options = {
+    root: null,
+    rootMargin: "0px",
+    threshold: 1.0,
+  };
+
   const containerRef = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
 
   const callbackFunction = (entries) => {
     const [entry] = entries;
-    setIsVisible(entry.isIntersecting);
+    if (entry.isIntersecting) {
+      const intersectedElement = entry.target.className;
+      alert(intersectedElement);
+    }
   };
 
   useEffect(() => {
@@ -19,30 +27,16 @@ const useElementOnScreen = (options) => {
     };
   }, [containerRef, options]);
 
-  return [containerRef, isVisible];
+  return containerRef;
 };
 
 function App() {
   const sections = document.querySelectorAll("section");
   const [section] = sections;
 
-  const [homeRef, isHome] = useElementOnScreen({
-    root: null,
-    rootMargin: "0px",
-    threshold: 1.0,
-  });
-
-  const [projectRef, isProject] = useElementOnScreen({
-    root: null,
-    rootMargin: "0px",
-    threshold: 1.0,
-  });
-
-  const [contactRef, isContact] = useElementOnScreen({
-    root: null,
-    rootMargin: "0px",
-    threshold: 1.0,
-  });
+  const homeRef = useElementOnScreen();
+  const projectRef = useElementOnScreen();
+  const contactRef = useElementOnScreen();
 
   return (
     <div className="app">
@@ -50,18 +44,18 @@ function App() {
         <nav>
           <ul>
             <li>
-              <a data-page="home" href="#">
-                {isHome ? "IN VIEWPORT" : "NOT IN VIEWPORT"}
+              <a id="home" data-page="home" href="#">
+                Home
               </a>
             </li>
             <li>
-              <a data-page="project" href="#">
-                {isProject ? "IN VIEWPORT" : "NOT IN VIEWPORT"}
+              <a id="project" data-page="project" href="#">
+                Project
               </a>
             </li>
             <li>
-              <a data-page="contact" href="#">
-                {isContact ? "IN VIEWPORT" : "NOT IN VIEWPORT"}
+              <a id="contact" data-page="contact" href="#">
+                Contact
               </a>
             </li>
             <div className="bubble"></div>
@@ -70,14 +64,20 @@ function App() {
       </header>
 
       <main>
-        <section data-index="0" className="home">
-          <h2 ref={homeRef}>home</h2>
+        <section data-index="0" className="intersection">
+          <div ref={homeRef} className="home">
+            <h2>home</h2>
+          </div>
         </section>
-        <section data-index="1" className="project">
-          <h2 ref={projectRef}>project</h2>
+        <section data-index="1" className="intersection">
+          <div ref={projectRef} className="project">
+            <h2>project</h2>
+          </div>
         </section>
-        <section data-index="2" className="contact">
-          <h2 ref={contactRef}>contact</h2>
+        <section data-index="2" className="intersection">
+          <div ref={contactRef} className="contact">
+            <h2>contact</h2>
+          </div>
         </section>
       </main>
     </div>
