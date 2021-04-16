@@ -1,45 +1,67 @@
-import { useInView } from "react-intersection-observer";
+import React, { useRef, useEffect, useState } from "react";
 import "./App.css";
+
+const useElementOnScreen = (options) => {
+  const containerRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  const callbackFunction = (entries) => {
+    const [entry] = entries;
+    setIsVisible(entry.isIntersecting);
+  };
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(callbackFunction, options);
+    if (containerRef.current) observer.observe(containerRef.current);
+
+    return () => {
+      if (containerRef.current) observer.unobserve(containerRef.current);
+    };
+  }, [containerRef, options]);
+
+  return [containerRef, isVisible];
+};
+
 function App() {
   const sections = document.querySelectorAll("section");
-  const bubble = document.querySelectorAll(".bubble");
-  const gradients = ["orange", "red", "blue"];
-  const options = { threshold: 0.2 };
+  const [section] = sections;
 
-  const observer = new IntersectionObserver(navCheck, options);
-  console.log("sections" + sections);
-
-  function navCheck(entries) {
-    entries.forEach(entry => {
-      console.log("entry" + entry);
-      const className = entry.target.className;
-      console.log("clName" + className);
-    });
-    console.log("entries" + entries);
-  }
-
-  sections.forEach(section => {
-    observer.observe(section);
-    console.log("section" + section);
+  const [homeRef, isHome] = useElementOnScreen({
+    root: null,
+    rootMargin: "0px",
+    threshold: 1.0,
   });
+
+  const [projectRef, isProject] = useElementOnScreen({
+    root: null,
+    rootMargin: "0px",
+    threshold: 1.0,
+  });
+
+  const [contactRef, isContact] = useElementOnScreen({
+    root: null,
+    rootMargin: "0px",
+    threshold: 1.0,
+  });
+
   return (
-    <div className="App">
+    <div className="app">
       <header>
         <nav>
           <ul>
             <li>
               <a data-page="home" href="#">
-                Home
+                {isHome ? "IN VIEWPORT" : "NOT IN VIEWPORT"}
               </a>
             </li>
             <li>
               <a data-page="project" href="#">
-                Project
+                {isProject ? "IN VIEWPORT" : "NOT IN VIEWPORT"}
               </a>
             </li>
             <li>
               <a data-page="contact" href="#">
-                Contact
+                {isContact ? "IN VIEWPORT" : "NOT IN VIEWPORT"}
               </a>
             </li>
             <div className="bubble"></div>
@@ -49,13 +71,13 @@ function App() {
 
       <main>
         <section data-index="0" className="home">
-          <h2>home</h2>
+          <h2 ref={homeRef}>home</h2>
         </section>
         <section data-index="1" className="project">
-          <h2>project</h2>
+          <h2 ref={projectRef}>project</h2>
         </section>
         <section data-index="2" className="contact">
-          <h2>contact</h2>
+          <h2 ref={contactRef}>contact</h2>
         </section>
       </main>
     </div>

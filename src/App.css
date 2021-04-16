@@ -51,6 +51,11 @@ section h2 {
   font-size: 5rem;
   color: white;
 }
+
+.logs{
+  background: green;
+}
+
 .home {
   background: orange;
 }
