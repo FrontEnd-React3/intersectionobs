@@ -41,17 +41,13 @@ nav a {
   color: black;
   text-decoration: none;
 }
+
 section {
   min-height: 100vh;
-}
-
-.logs {
-  background: green;
+  width: 100vw;
 }
 
 .intersection {
-  min-height: 100vh;
-  width: 100vw;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -67,9 +63,15 @@ section {
 .home {
   background: orange;
 }
+
 .project {
   background: red;
 }
+
 .contact {
   background: blue;
+}
+
+.logs {
+  background: green;
 }

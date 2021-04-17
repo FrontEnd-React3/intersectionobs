@@ -13,8 +13,15 @@ const useElementOnScreen = () => {
   const callbackFunction = (entries) => {
     const [entry] = entries;
     if (entry.isIntersecting) {
-      const intersectedElement = entry.target.className;
-      alert(intersectedElement);
+      const observedClass = entry.target.className;
+      const observedElement = document.getElementById(observedClass);
+      observedElement.style.backgroundColor = "black";
+      observedElement.style.color = "white";
+    } else {
+      const unobservedClass = entry.target.className;
+      const ubobservedElement = document.getElementById(unobservedClass);
+      ubobservedElement.style.color = "black";
+      ubobservedElement.style.backgroundColor = "white";
     }
   };
 
